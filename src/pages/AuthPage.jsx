@@ -1,14 +1,25 @@
-// src/pages/AuthPage.jsx
-
-import { useState } from 'react';
+// import './AuthPage.css';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import { createClient } from '@supabase/supabase-js';
 
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const AuthPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    document.body.classList.add('authpage-root');
+    return () => {
+      document.body.classList.remove('authpage-root');
+    };
+  }, []);
 
   const handleAuth = async (e) => {
     e.preventDefault();
@@ -22,6 +33,7 @@ const AuthPage = () => {
       // success, user exists
       setLoading(false);
       console.log('Logged in!');
+      navigate('/');
       return;
     }
 
@@ -31,6 +43,7 @@ const AuthPage = () => {
     if (!signUpError) {
       setLoading(false);
       console.log('Registered and logged in!');
+      navigate('/');
       return;
     }
 
@@ -40,12 +53,12 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black text-white">
+    <div className="min-h-screen flex items-center justify-center bg-black text-white">
       <form
         onSubmit={handleAuth}
         className="bg-[#111] p-8 rounded-xl shadow-xl w-full max-w-sm"
       >
-        <h2 className="text-2xl font-semibold text-center mb-6">Welcome to <span className="text-white font-bold">LensNest</span></h2>
+        <h2 className="text-2xl text-center mb-6">Login into <span className="text-white font-bold">LensNest</span></h2>
 
         <label className="block mb-2">Email Address</label>
         <input
