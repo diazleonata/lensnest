@@ -42,8 +42,8 @@ const AuthPage = () => {
 
     if (!signUpError) {
       setLoading(false);
-      console.log('Registered and logged in!');
-      navigate('/');
+      console.log('Registered! Please confirm your email.');
+      setErrorMsg('Registration successful! Please check your email to confirm your account.');
       return;
     }
 
